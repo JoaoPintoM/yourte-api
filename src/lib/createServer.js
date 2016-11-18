@@ -6,6 +6,7 @@ import cors from 'kcors'
 import respond from 'koa-respond'
 import createApis from './createApis'
 import bodyParser from 'koa-bodyparser'
+import jwt from 'koa-jwt'
 
 import logger from './logger'
 import getConfiguredContainer from './configureContainer'
@@ -42,6 +43,40 @@ export default async function createServer () {
         id: ctx.request.query.userId
       }
     })
+    return next()
+  })
+
+  app.use((ctx, next) => {
+    return next().catch((err) => {
+      if (err.status === 401) {
+        ctx.status = 401
+        ctx.body = 'Protected resource, use Authorization header to get access\n'
+      } else {
+        throw err
+      }
+    })
+  })
+
+  // Unprotected middleware
+  app.use((ctx, next) => {
+    if (ctx.url.match(/^\/public/)) {
+      ctx.body = 'unprotected\n'
+    } else {
+      return next()
+    }
+  })
+
+  app.use(jwt({ secret: 'hOeizoKoezosPke' }))
+
+  // Protected middleware
+  app.use((ctx) => {
+    if (ctx.url.match(/^\/api/)) {
+      ctx.body = 'protected\n'
+    }
+  })
+
+  app.use((ctx, next) => {
+    console.log(ctx.state.user)
     return next()
   })
 
