@@ -47,26 +47,26 @@ export default async function createServer () {
   app.use(convert(cors()))
   app.use(bodyParser())
 
-  app.use(new CSRF({
-    invalidSessionSecretMessage: 'Invalid session secret',
-    invalidSessionSecretStatusCode: 403,
-    invalidTokenMessage: 'Invalid CSRF token',
-    invalidTokenStatusCode: 403,
-    excludedMethods: [ 'GET', 'HEAD', 'OPTIONS' ],
-    disableQuery: false
-  }))
-
-  // your middleware here is for CSRF
-  app.use((ctx, next) => {
-    if (![ 'GET', 'POST' ].includes(ctx.method)) {
-      return next()
-    }
-    if (ctx.method === 'GET') {
-      ctx.body = ctx.csrf
-      return
-    }
-    ctx.body = 'OK'
-  })
+  // app.use(new CSRF({
+  //   invalidSessionSecretMessage: 'Invalid session secret',
+  //   invalidSessionSecretStatusCode: 403,
+  //   invalidTokenMessage: 'Invalid CSRF token',
+  //   invalidTokenStatusCode: 403,
+  //   excludedMethods: [ 'GET', 'HEAD', 'OPTIONS' ],
+  //   disableQuery: false
+  // }))
+  //
+  // // your middleware here is for CSRF
+  // app.use((ctx, next) => {
+  //   if (![ 'GET', 'POST' ].includes(ctx.method)) {
+  //     return next()
+  //   }
+  //   if (ctx.method === 'GET') {
+  //     ctx.body = ctx.csrf
+  //     return next()
+  //   }
+  //   ctx.body = 'OK'
+  // })
 
   // authentication
   require('./auth')
@@ -91,6 +91,18 @@ export default async function createServer () {
     return next()
   })
 
+  router.get('/auth/facebook',
+    passport.authenticate('facebook')
+  )
+
+  router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+      successRedirect: '/app',
+      failureRedirect: '/'
+    })
+  )
+
+  // // require('./authorization.js')
   // app.use((ctx, next) => {
   //   return next().catch((err) => {
   //     if (err.status === 401) {

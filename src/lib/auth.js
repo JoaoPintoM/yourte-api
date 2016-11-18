@@ -1,6 +1,7 @@
 // inspired by : https://github.com/mapmeld/koa-passport-example
 import passport from 'koa-passport'
 import User from '../models/user.js'
+import { config } from '../config/config'
 
 User.findOne({ username: 'test' }, (err, testUser) => {
   if (err) {
@@ -31,9 +32,9 @@ passport.use(new LocalStrategy((username, password, done) => {
 
 const FacebookStrategy = require('passport-facebook').Strategy
 passport.use(new FacebookStrategy({
-  clientID: 'blablabla',
-  clientSecret: 'blablabla',
-  callbackURL: 'http://yourapp.local:' + (process.env.PORT || 3000) + '/auth/facebook/callback',
+  clientID: config.FACEBOOK.KEY,
+  clientSecret: config.FACEBOOK.SECRET,
+  callbackURL: 'http://tipi.local:' + 1338 + '/auth/facebook/callback',
   profileFields: [
     'id', 'name',
     'picture.type(large)', 'emails',
