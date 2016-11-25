@@ -16,3 +16,11 @@ export function createUser (entry) {
 export function updateUser (user) {
   return user.save()
 }
+
+export function getTestUsers () {
+  return User.find({ testing: true }).exec()
+}
+
+export function deleteTestUsers () {
+  return User.remove({ testing: true }).exec()
+}

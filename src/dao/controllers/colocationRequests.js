@@ -16,3 +16,12 @@ export function create (entry) {
 export function update (colocationRequest) {
   return colocationRequest.save()
 }
+
+// Testing
+export function getTests () {
+  return ColocationRequest.find({ testing: true }).exec()
+}
+
+export function deleteTesting () {
+  return ColocationRequest.remove({ testing: true }).exec()
+}
