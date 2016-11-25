@@ -1,6 +1,6 @@
 // inspired by : https://github.com/mapmeld/koa-passport-example
 import passport from 'koa-passport'
-import User from '../models/user.js'
+import User from '../dao/models/user.js'
 import { config } from '../config/config'
 
 User.findOne({ username: 'test' }, (err, testUser) => {
