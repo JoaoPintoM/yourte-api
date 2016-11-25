@@ -8,6 +8,10 @@ export function get () {
   return ColocationRequest.find().exec()
 }
 
+export function getUserColocationsRequests (userId) {
+  return ColocationRequest.find({ user: userId }).exec()
+}
+
 export function create (entry) {
   const cr = new ColocationRequest(entry)
   return cr.save()
