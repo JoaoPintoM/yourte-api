@@ -33,6 +33,7 @@ export default async function createServer () {
 
   console.log('connecting to MongoDB...')
   mongoose.connect(process.env.MONGODB_URI || 'localhost')
+  mongoose.Promise = global.Promise
 
   // trust proxy
   app.proxy = true
