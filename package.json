@@ -1,7 +1,7 @@
 {
-  "name": "koa-es7-boilerplate",
-  "version": "0.5.0",
-  "description": "A boilerplate for writing Koa 2 apps in ES7 with Babel and Node 6.",
+  "name": "Yourte-api",
+  "version": "0.6.0",
+  "description": "Yourte-api",
   "engines": {
     "node": ">=6.0.0",
     "npm": ">=3.8"
