@@ -1,13 +1,12 @@
 import * as usersCtrl from '../dao/controllers/users'
 import { User } from './objects/user'
 
-export async function getAllUsers (id) {
-  const _users = await usersCtrl.get()
+export async function getAllUsers () {
+  const users = await usersCtrl.get()
+  return users.map(u => new User(u))
+}
 
-  const users = _users.map((u) => new User({
-    id: u._id,
-    username: u.username
-  }))
-
-  return users
+export async function getUser (id) {
+  const user = await usersCtrl.getUser(id)
+  return new User(user)
 }

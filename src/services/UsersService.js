@@ -9,4 +9,8 @@ export default class ClassService {
     console.log(this.currentUser)
     return usersDomain.getAllUsers()
   }
+
+  getUser (id) {
+    return usersDomain.getUser(id)
+  }
 }
