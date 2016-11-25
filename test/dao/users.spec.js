@@ -37,6 +37,12 @@ describe('colocationRequest collection basic behavior', () => {
     expect(coloc.user.toString()).to.equal(userId.toString())
   })
 
+  it('it should be retrieve with a user ._id', async () => {
+    const coloc = await colocCtrl.getUserColocationsRequests(userId)
+    expect(coloc).to.be.not.empty
+    expect(coloc[0].user.toString()).to.equal(userId.toString())
+  })
+
   it('cannot be created without user', async () => {
     try {
       await colocCtrl.create({ maxPrice: 450, testing: true })
