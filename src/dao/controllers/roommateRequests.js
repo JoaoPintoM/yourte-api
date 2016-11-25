@@ -8,6 +8,10 @@ export function get () {
   return RoommateRequest.find().exec()
 }
 
+export function getUserRoommatesRequests (userId) {
+  return RoommateRequest.find({ user: userId }).exec()
+}
+
 export function create (entry) {
   const rr = new RoommateRequest(entry)
   return rr.save()

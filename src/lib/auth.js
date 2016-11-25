@@ -22,7 +22,7 @@ User.findOne({ username: 'test' }, (err, testUser) => {
         console.log(testUser)
         const colocR = new ColocationRequest({
           user: testUser,
-          price: 450
+          maxPrice: 450
         })
         colocR.save()
       }
