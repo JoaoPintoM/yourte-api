@@ -5,7 +5,7 @@ import dotenvExpand from 'dotenv-expand'
 const myEnv = dotenv.config()
 dotenvExpand(myEnv)
 
-function toArray (string) {
+function toArray (string) { // eslint-disable-line no-unused-vars
   if (!string || string.indexOf(',') < 0) {
     return string
   }
@@ -54,7 +54,9 @@ const base = {
   MONGO: {
     URL: `mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${MONGO_DB_NAME}?${MONGO_DB_OPTION}`,
     COLLECTIONS: {
-      USERS: 'users'
+      USERS: 'users',
+      COLOCREQUEST: 'colocation-requests',
+      ROOMMATEREQUEST: 'roommate-requests'
     }
   },
   TIMEZONE: TZ,
