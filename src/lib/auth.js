@@ -1,6 +1,7 @@
 // inspired by : https://github.com/mapmeld/koa-passport-example
 import passport from 'koa-passport'
 import User from '../dao/models/user.js'
+import ColocationRequest from '../dao/models/colocationRequest.js'
 import { config } from '../config/config'
 
 User.findOne({ username: 'test' }, (err, testUser) => {
@@ -13,7 +14,19 @@ User.findOne({ username: 'test' }, (err, testUser) => {
       username: 'test',
       password: 'test'
     })
-    testUser.save()
+    testUser.save((err) => {
+      if (err) {
+        console.log('something went really bad')
+        process.exit()
+      } else {
+        console.log(testUser)
+        const colocR = new ColocationRequest({
+          user: testUser,
+          price: 450
+        })
+        colocR.save()
+      }
+    })
   }
 })
 
