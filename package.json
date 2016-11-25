@@ -12,7 +12,7 @@
     "dev": "nodemon src/bin/server.js",
     "debug": "icebug src/bin/server.js",
     "debug-brk": "npm run debug -- --break",
-    "test": "mocha --require test/_helpers test/**/*.spec.js --compilers js:babel-register -R dot --timeout 5000",
+    "test": "mocha --require test/_helpers test/**/*.spec.js --compilers js:babel-register --timeout 5000",
     "test-watch": "npm run test -- --watch",
     "lint": "eslint src/ test/",
     "lint-watch": "esw -w src/ test/",
