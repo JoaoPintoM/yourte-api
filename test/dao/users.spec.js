@@ -1,22 +1,24 @@
-import * as userCtrl from 'dao/controllers/users'
-import * as colocCtrl from 'dao/controllers/colocationRequests'
-import * as roommateCtrl from 'dao/controllers/roommateRequests'
+import { UsersRepository } from 'dao/repositories/users'
+import * as colocCtrl from 'dao/repositories/colocationRequests'
+import * as roommateCtrl from 'dao/repositories/roommateRequests'
 
 let userId
 let user
 let colocId
 let roommateRequestId
 
+const usersRepo = new UsersRepository()
+
 describe('users collection basic behavior', () => {
   it('create basic user', async () => {
-    const user = await userCtrl.createUser({ username: 'un1cqt3stus3r_y0urt3', testing: true })
+    const user = await usersRepo.createUser({ username: 'un1cqt3stus3r_y0urt3', testing: true })
     user.username.should.equal('un1cqt3stus3r_y0urt3')
     user._id.should.not.be.empty
     userId = user._id
   })
 
   it('get user by id', async () => {
-    user = await userCtrl.getUser(userId)
+    user = await usersRepo.getUser(userId)
     user.username.should.equal('un1cqt3stus3r_y0urt3')
   })
 })
@@ -79,8 +81,8 @@ describe('roommatesRequest collection basic behavior', () => {
 
 describe('Cleaning DAO', () => {
   it('Testing users should be deleted', async () => {
-    await userCtrl.deleteTestUsers()
-    const users = await userCtrl.getTestUsers()
+    await usersRepo.deleteTestUsers()
+    const users = await usersRepo.getTestUsers()
     expect(users).to.be.empty
   })
 

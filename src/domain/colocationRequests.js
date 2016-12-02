@@ -1,4 +1,4 @@
-import * as colocCtrl from '../dao/controllers/colocationRequests'
+import * as colocCtrl from '../dao/repositories/colocationRequests'
 import { ColocationRequest } from './objects/colocationRequest'
 
 export async function getColocationsRequestsFormUser (userId) {
