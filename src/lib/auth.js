@@ -1,19 +1,33 @@
-// inspired by : https://github.com/mapmeld/koa-passport-example
 import passport from 'koa-passport'
-import User from '../dao/models/user.js'
+import { UsersRepository } from '../dao/repositories/users'
+import ColocationRequest from '../dao/models/colocationRequest.js'
 import { config } from '../config/config'
 
-User.findOne({ username: 'test' }, (err, testUser) => {
+const userRepo = new UsersRepository()
+
+userRepo.User.findOne({ username: 'test' }, (err, testUser) => {
   if (err) {
     throw err
   }
   if (!testUser) {
     console.log('test user did not exist; creating test user...')
-    testUser = new User({
+    testUser = new userRepo.User({
       username: 'test',
       password: 'test'
     })
-    testUser.save()
+    testUser.save((err) => {
+      if (err) {
+        console.log('something went really bad')
+        process.exit()
+      } else {
+        console.log(testUser)
+        const colocR = new ColocationRequest({
+          user: testUser,
+          maxPrice: 450
+        })
+        colocR.save()
+      }
+    })
   }
 })
 
@@ -22,12 +36,12 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((id, done) => {
-  User.findById(id, done)
+  userRepo.User.findById(id, done)
 })
 
 const LocalStrategy = require('passport-local').Strategy
 passport.use(new LocalStrategy((username, password, done) => {
-  User.findOne({ username: username, password: password }, done)
+  userRepo.User.findOne({ username: username, password: password }, done)
 }))
 
 const FacebookStrategy = require('passport-facebook').Strategy
@@ -47,7 +61,14 @@ passport.use(new FacebookStrategy({
 },
   (token, tokenSecret, profile, done) => {
     console.log(profile)
-    User.findOne({ facebook_id: profile.id }, done)
+    console.log(' ')
+
+    userRepo.createUser({
+      username: profile.displayName,
+      facebook_id: profile.id
+    }).then((r) => {
+      !r ? done('jErr bad user creation') : done(null, r)
+    })
   }
 ))
 

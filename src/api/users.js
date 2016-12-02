@@ -1,8 +1,9 @@
 import { makeClassInvoker } from 'awilix-koa'
 
 class UsersAPI {
-  constructor ({ usersService }) {
+  constructor ({ usersService, colocationRequestsService }) {
     this.userService = usersService
+    this.colocReqService = colocationRequestsService
   }
 
   async findUsers (ctx) {
@@ -22,6 +23,12 @@ class UsersAPI {
     }
     ctx.ok(client)
   }
+
+  async getColocationsRequestsFormUser (ctx) {
+    const results = await this.colocReqService
+                              .getColocationsRequestsFormUser(ctx.params.id)
+    ctx.ok(results)
+  }
 }
 
 export default function (router) {
@@ -31,4 +38,5 @@ export default function (router) {
   router.post('/api/users', api('createUser'))
 
   router.get('/api/users/:id', api('findUser'))
+  router.get('/api/users/:id/colocationRequests', api('getColocationsRequestsFormUser'))
 }
