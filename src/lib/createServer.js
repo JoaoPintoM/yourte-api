@@ -97,29 +97,6 @@ export default async function createServer () {
     return next()
   })
 
-  router.get('/auth/facebook',
-    passport.authenticate('facebook')
-  )
-
-  router.get('/auth/facebook/callback',
-    passport.authenticate('facebook', {
-      successRedirect: '/api/users',
-      failureRedirect: '/api/users2'
-    })
-  )
-
-  // require('./authorization.js')
-  app.use((ctx, next) => {
-    return next().catch((err) => {
-      if (err.status === 401) {
-        ctx.status = 401
-        ctx.body = 'Protected resource, use Authorization header to get access\n'
-      } else {
-        throw err
-      }
-    })
-  })
-
   // Unprotected middleware
   app.use((ctx, next) => {
     if (ctx.url.match(/^\/public/)) {
@@ -129,7 +106,28 @@ export default async function createServer () {
     }
   })
 
-  app.use(jwt({ secret: 'hOeizoKoezosPke', passthrough: true }))
+  app.use((ctx, next) => {
+    if (ctx.url.match(/^\/authOK/)) {
+      ctx.body = `Welcome ${ctx.state.user.username}`
+    } else {
+      return next()
+    }
+  })
+
+  router.get('/auth/facebook',
+    passport.authenticate('facebook')
+  )
+
+  router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+      successRedirect: '/authOK',
+      failureRedirect: '/api/users2'
+    })
+  )
+
+  // app.use(jwt({ secret: 'hOeizoKoezosPke' }))
+  app.use(jwt({ secret: 'hOeizoKoezosPke' })
+     .unless({ path: [/^\/auth/, /^\/public/] }))
 
   // Protected middleware
   app.use((ctx, next) => {
