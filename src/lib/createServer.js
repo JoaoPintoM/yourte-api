@@ -48,6 +48,11 @@ export default async function createServer () {
   app.use(convert(cors()))
   app.use(bodyParser())
 
+  app.use((ctx, next) => {
+    console.log('joao middleware')
+    return next()
+  })
+
   // app.use(new CSRF({
   //   invalidSessionSecretMessage: 'Invalid session secret',
   //   invalidSessionSecretStatusCode: 403,
@@ -70,9 +75,9 @@ export default async function createServer () {
   // })
 
   // authentication
-  // require('./auth')
-  // app.use(passport.initialize())
-  // app.use(passport.session())
+  require('./auth')
+  app.use(passport.initialize())
+  app.use(passport.session())
 
   // Container is configured with our services and whatnot.
   const container = getConfiguredContainer()
@@ -92,16 +97,16 @@ export default async function createServer () {
     return next()
   })
 
-  // router.get('/auth/facebook',
-  //   passport.authenticate('facebook')
-  // )
-  //
-  // router.get('/auth/facebook/callback',
-  //   passport.authenticate('facebook', {
-  //     successRedirect: '/app',
-  //     failureRedirect: '/'
-  //   })
-  // )
+  router.get('/auth/facebook',
+    passport.authenticate('facebook')
+  )
+
+  router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+      successRedirect: '/api/users',
+      failureRedirect: '/api/users2'
+    })
+  )
 
   // require('./authorization.js')
   app.use((ctx, next) => {
@@ -135,7 +140,7 @@ export default async function createServer () {
   })
 
   app.use((ctx, next) => {
-    console.log(ctx.state.user)
+    console.log('state.user', ctx.state.user)
     return next()
   })
 
