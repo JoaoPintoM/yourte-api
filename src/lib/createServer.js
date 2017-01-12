@@ -125,7 +125,6 @@ export default async function createServer () {
     })
   )
 
-  // app.use(jwt({ secret: 'hOeizoKoezosPke' }))
   app.use(jwt({ secret: 'hOeizoKoezosPke' })
      .unless({ path: [/^\/auth/, /^\/public/] }))
 
