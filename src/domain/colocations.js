@@ -8,3 +8,13 @@ export async function getColocations (query) {
   console.log(colocs)
   return colocs.map(x => new Colocation(x))
 }
+
+export async function getByGeo (query) {
+  const colocs = await repo.getByGeo(query)
+  return colocs.map(x => new Colocation(x))
+}
+
+export async function createTest () {
+  const coloc = await repo.createTestColocation()
+  return new Colocation(coloc)
+}

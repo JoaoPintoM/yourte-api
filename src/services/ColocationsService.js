@@ -8,6 +8,14 @@ export default class ColocationsService {
     console.log(this.currentUser)
   }
 
+  createTest () {
+    return colocDomain.createTest()
+  }
+
+  findGeoTest (prms) {
+    return colocDomain.getByGeo(prms)
+  }
+
   find (prms) {
     console.log(this.currentUser)
     const {

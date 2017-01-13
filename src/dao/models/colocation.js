@@ -6,9 +6,12 @@ const colocationSchema = Schema({ // eslint-disable-line new-cap
   name: { type: String, default: 'no-name' },
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   price: { type: Number },
-  testing: Boolean
-
+  testing: Boolean,
+  loc: {
+    type: { type: String },
+    coordinates: [Number]
+  }
 })
 
-// const Colocation = mongoose.model('Colocation', colocationSchema)
+colocationSchema.index({ 'loc': '2dsphere' })
 export default colocationSchema
