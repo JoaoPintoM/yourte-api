@@ -56,6 +56,7 @@ const base = {
     COLLECTIONS: {
       USERS: 'users',
       COLOCREQUEST: 'colocation-requests',
+      COLOCATION: 'colocations',
       ROOMMATEREQUEST: 'roommate-requests'
     }
   },

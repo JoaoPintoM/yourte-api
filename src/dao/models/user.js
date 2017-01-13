@@ -6,7 +6,9 @@ const userSchema = mongoose.Schema({
   facebook_id: String,
   twitter_id: String,
   google_id: String,
-  testing: Boolean
+  testing: Boolean,
+  picture: String,
+  gender: String
 })
 
 // module.exports = mongoose.model('User', userSchema)

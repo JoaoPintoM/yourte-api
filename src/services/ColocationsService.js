@@ -1,9 +1,11 @@
-import * as usersDomain from '../domain/users'
+import * as colocDomain from '../domain/colocations'
 import _ from 'lodash'
 
-export default class UsersService {
+export default class ColocationsService {
   constructor ({ currentUser }) {
     this.currentUser = currentUser
+    console.log('ColocationsService constructor:')
+    console.log(this.currentUser)
   }
 
   find (prms) {
@@ -22,10 +24,6 @@ export default class UsersService {
                     .value()
 
     console.log(query)
-    return usersDomain.getUsers(query)
-  }
-
-  getUser (id) {
-    return usersDomain.getUser(id)
+    return colocDomain.getColocations(query)
   }
 }

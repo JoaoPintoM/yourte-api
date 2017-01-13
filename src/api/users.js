@@ -7,7 +7,11 @@ class UsersAPI {
   }
 
   async findUsers (ctx) {
-    const users = await this.userService.find()
+    const prms = {}
+    if (ctx.query.gender) {
+      prms.gender = ctx.query.gender
+    }
+    const users = await this.userService.find(prms)
     ctx.ok(users)
   }
 

@@ -10,8 +10,8 @@ export class UsersRepository {
     return this.User.findById(userId).exec()
   }
 
-  get () {
-    return this.User.find().exec()
+  get (query) {
+    return this.User.find(query).exec()
   }
 
   createUser (entry) {
