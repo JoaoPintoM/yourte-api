@@ -29,6 +29,7 @@
     "dotenv": "^2.0.0",
     "dotenv-expand": "^0.1.0",
     "glob": "^7.0.5",
+    "jsonwebtoken": "^7.2.1",
     "kcors": "^1.2.1",
     "koa": "^2.0.0-alpha.3",
     "koa-bodyparser": "^3.0.0",

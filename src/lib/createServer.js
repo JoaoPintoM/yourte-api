@@ -7,6 +7,7 @@ import respond from 'koa-respond'
 import createApis from './createApis'
 import bodyParser from 'koa-bodyparser'
 import jwt from 'koa-jwt'
+import jsonwebtoken from 'jsonwebtoken'
 
 import logger from './logger'
 import getConfiguredContainer from './configureContainer'
@@ -103,9 +104,16 @@ export default async function createServer () {
 
   router.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
-      successRedirect: '/api/users',
       failureRedirect: '/api/users2'
-    })
+    }), (ctx, next) => {
+      console.log('YES BABY')
+      console.log(ctx.state.user)
+
+      const jwt = jsonwebtoken.sign(ctx.state.user._id, 'hOeizoKoezosPke')
+      ctx.body = jwt
+
+      ctx.redirect(`http://localhost:3000/token/${jwt}`)
+    }
   )
 
   // require('./authorization.js')
@@ -129,11 +137,14 @@ export default async function createServer () {
     }
   })
 
-  app.use(jwt({ secret: 'hOeizoKoezosPke', passthrough: true }))
+  // app.use(jwt({ secret: 'hOeizoKoezosPke' }))
+  app.use(jwt({ secret: 'hOeizoKoezosPke' }).unless({ path: [/^\/auth/] }))
+  // app.use(jwt({ secret: 'hOeizoKoezosPke', passthrough: true }))
 
   // Protected middleware
   app.use((ctx, next) => {
     if (ctx.url.match(/^\/api/)) {
+      console.log(ctx.url)
       ctx.body = 'protected\n'
     }
     return next()
