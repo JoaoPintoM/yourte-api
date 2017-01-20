@@ -5,11 +5,16 @@ export default class ColocationsService {
   constructor ({ currentUser }) {
     this.currentUser = currentUser
     console.log('ColocationsService constructor:')
+    console.log('user: ')
     console.log(this.currentUser)
   }
 
   createTest () {
     return colocDomain.createTest()
+  }
+
+  create (prms) {
+    return colocDomain.create(prms)
   }
 
   findGeoTest (prms) {

@@ -18,3 +18,8 @@ export async function createTest () {
   const coloc = await repo.createTestColocation()
   return new Colocation(coloc)
 }
+
+export async function create (body) {
+  const result = await repo.createColocation(body)
+  return new Colocation(result)
+}

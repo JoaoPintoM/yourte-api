@@ -21,12 +21,18 @@ class ColocationAPI {
     const coloc = await this.colocationsService.createTest()
     ctx.ok(coloc)
   }
+
+  async create (ctx) {
+    const coloc = await this.colocationsService.create(ctx.request.body)
+    ctx.ok(coloc)
+  }
 }
 
 export default function (router) {
   const api = makeClassInvoker(ColocationAPI)
 
   router.get('/api/colocations', api('findColocs'))
+  router.post('/api/colocations/create', api('create'))
   router.get('/api/colocations/geoTest', api('findColocsGeoTest'))
   router.get('/api/colocations/createTest', api('createTest'))
 }

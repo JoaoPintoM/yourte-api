@@ -90,10 +90,20 @@ export default async function createServer () {
 
   // Adds middleware that creates a new Container Scope for each request.
   app.use((ctx, next) => {
+    console.log(ctx.request.headers)
+
+    if (ctx.request.headers && ctx.request.headers.authorization) {
+      const token = ctx.request.headers.authorization.replace('Bearer ', '')
+      console.log(token)
+      jsonwebtoken.verify(token, 'hOeizoKoezosPke', (err, decoded) => {
+        console.log('err') // bar
+        console.log(decoded)
+      })
+    }
     // faking authentication just to demo Awilix capabilities
     ctx.state.container.registerValue({
       currentUser: {
-        id: ctx.request.query.userId
+        id: ctx.state.user
       }
     })
     return next()
@@ -110,7 +120,7 @@ export default async function createServer () {
       console.log('YES BABY')
       console.log(ctx.state.user)
 
-      const jwt = jsonwebtoken.sign(ctx.state.user._id, 'hOeizoKoezosPke')
+      const jwt = jsonwebtoken.sign(ctx.state.user._id.toString(), 'hOeizoKoezosPke')
       ctx.body = jwt
 
       ctx.redirect(`${config.WEB.URL}/token/${jwt}`)
@@ -139,7 +149,7 @@ export default async function createServer () {
   })
 
   // app.use(jwt({ secret: 'hOeizoKoezosPke' }))
-  app.use(jwt({ secret: 'hOeizoKoezosPke' }).unless({ path: [/^\/auth/] }))
+  app.use(jwt({ secret: 'hOeizoKoezosPke', key: 'jwtdata' }).unless({ path: [/^\/auth/] }))
   // app.use(jwt({ secret: 'hOeizoKoezosPke', passthrough: true }))
 
   // Protected middleware
@@ -152,7 +162,15 @@ export default async function createServer () {
   })
 
   app.use((ctx, next) => {
-    console.log('state.user', ctx.state.user)
+    // console.log('jwtdata', ctx.state.jwtdata)
+    // console.log('token', ctx.state.token)
+    // console.log('token', ctx.state.token)
+    // jsonwebtoken.verify(ctx.state.jwtdata.toString(), 'hOeizoKoezosPke', (err, decoded) => {
+    //   console.log(err)
+    //   console.log(decoded)
+    // })
+    //
+    // console.log('state.user', ctx.state.user)
     return next()
   })
 

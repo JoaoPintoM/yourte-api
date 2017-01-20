@@ -32,11 +32,15 @@ userRepo.User.findOne({ username: 'test' }, (err, testUser) => {
 })
 
 passport.serializeUser((user, done) => {
+  console.log('serializeUser')
+  console.log(user)
   done(null, user._id)
 })
 
 passport.deserializeUser((id, done) => {
-  userRepo.User.findById(id, done)
+  console.log('deserializeUser')
+  console.log(id)
+  userRepo.User.findById(id, done).lean()
 })
 
 const LocalStrategy = require('passport-local').Strategy
