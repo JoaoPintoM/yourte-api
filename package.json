@@ -7,7 +7,7 @@
     "npm": ">=3.8"
   },
   "scripts": {
-    "start": "node dist/bin/server.js",
+    "start": "nodemon src/bin/server.js",
     "build": "babel src -d dist -s",
     "dev": "nodemon src/bin/server.js",
     "debug": "icebug src/bin/server.js",
