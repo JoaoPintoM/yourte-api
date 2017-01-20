@@ -48,7 +48,7 @@ const FacebookStrategy = require('passport-facebook').Strategy
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK.KEY,
   clientSecret: config.FACEBOOK.SECRET,
-  callbackURL: 'http://tipi.local:' + 1338 + '/auth/facebook/callback',
+  callbackURL: `${config.API.URL}/auth/facebook/callback`,
   profileFields: [
     'id', 'name',
     'picture.type(large)', 'emails',

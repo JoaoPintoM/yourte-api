@@ -16,7 +16,8 @@ const defaultConfig = {
   TZ: 'Europe/Amsterdam',
   DATE_FORMAT: 'YYYY-MM-DD[T]HH:mmZ',
   DATA_SIZE_LIMIT: '100',
-  API_BASE_URL: 'http://localhost:1338',
+  BASE_URL: 'http://stag.local',
+  WEB_PORT: '3000',
   API_TIMEOUT: '40000',
   API_PORT: '1338',
   NODE_ENV: 'development'
@@ -35,7 +36,8 @@ const {
     TZ,
     DATE_FORMAT,
     DATA_SIZE_LIMIT,
-    API_BASE_URL,
+    BASE_URL,
+    WEB_PORT,
     API_PORT,
     API_TIMEOUT
 } = process.env
@@ -43,9 +45,13 @@ const {
 const base = {
   NODE_ENV,
   API: {
-    BASEURL: API_BASE_URL,
+    URL: `${BASE_URL}:${API_PORT}`,
+    BASEURL: BASE_URL,
     PORT: API_PORT,
     TIMEOUT: parseInt(API_TIMEOUT, 10)
+  },
+  WEB: {
+    URL: `${BASE_URL}:${WEB_PORT}`
   },
   FACEBOOK: {
     KEY: FBKEY,

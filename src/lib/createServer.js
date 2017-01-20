@@ -20,6 +20,7 @@ import session from 'koa-generic-session'
 import MongoStore from 'koa-generic-session-mongo'
 import CSRF from 'koa-csrf'
 import passport from 'koa-passport'
+import { config } from '../config/config'
 
 /**
  * Creates and returns a new Koa application.
@@ -112,7 +113,7 @@ export default async function createServer () {
       const jwt = jsonwebtoken.sign(ctx.state.user._id, 'hOeizoKoezosPke')
       ctx.body = jwt
 
-      ctx.redirect(`http://localhost:3000/token/${jwt}`)
+      ctx.redirect(`${config.WEB.URL}/token/${jwt}`)
     }
   )
 
