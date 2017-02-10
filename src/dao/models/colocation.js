@@ -10,7 +10,9 @@ const colocationSchema = Schema({ // eslint-disable-line new-cap
   loc: {
     type: { type: String },
     coordinates: [Number]
-  }
+  },
+  adress: String,
+  images: { type: [String], required: true }
 })
 
 colocationSchema.index({ 'loc': '2dsphere' })

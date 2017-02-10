@@ -14,10 +14,10 @@ export class ColocationRepository {
     return this.Colocation.find(query).populate('user').exec()
   }
 
-  getByGeo () {
-    console.log('oi')
-    const long = 4.399925
-    const lat = 50.797403
+  getByGeo (query) {
+    console.log(query)
+    const long = parseFloat(query.lng)
+    const lat = parseFloat(query.lat)
 
     return this.Colocation.find({
       loc: {
@@ -43,7 +43,17 @@ export class ColocationRepository {
   }
 
   createColocation (entry) {
+    if (!entry.location) return
+
+    entry.loc = { 'type': 'Point',
+      coordinates: [entry.location.location.lng, entry.location.location.lat] }
+    entry.adress = entry.location.label
+    console.log(' ')
+    console.log('entry', entry)
+    console.log(' ')
+
     const colocation = new this.Colocation(entry)
+    console.log(colocation)
     return colocation.save()
   }
 

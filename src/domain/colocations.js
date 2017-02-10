@@ -4,8 +4,18 @@ import { Colocation } from './objects/colocation'
 const repo = new ColocationRepository()
 
 export async function getColocations (query) {
-  const colocs = await repo.get(query)
-  console.log(colocs)
+  console.log('')
+  console.log('')
+  console.log('')
+  console.log(query)
+  console.log(' ')
+
+  let colocs = {}
+  if (query.lng && query.lat) {
+    colocs = await repo.getByGeo(query)
+  } else {
+    colocs = await repo.get(query)
+  }
   return colocs.map(x => new Colocation(x))
 }
 

@@ -5,7 +5,6 @@ export default class ColocationsService {
   constructor ({ currentUser }) {
     this.currentUser = currentUser
     console.log('ColocationsService constructor:')
-    console.log('user: ')
     console.log(this.currentUser)
   }
 
@@ -14,6 +13,7 @@ export default class ColocationsService {
   }
 
   create (prms) {
+    console.log('prms', prms)
     return colocDomain.create(prms)
   }
 
@@ -23,12 +23,17 @@ export default class ColocationsService {
 
   find (prms) {
     console.log(this.currentUser)
+
     const {
-      gender
+      gender,
+      lng,
+      lat
     } = prms
 
     const q = {
-      gender
+      gender,
+      lng,
+      lat
     }
 
     const query = _(q)
