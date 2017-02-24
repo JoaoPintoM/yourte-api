@@ -9,7 +9,7 @@
   "scripts": {
     "start": "nodemon src/bin/server.js",
     "build": "babel src -d dist -s",
-    "dev": "nodemon src/bin/server.js",
+    "dev": "nodemon --delay 500ms src/bin/server.js",
     "debug": "icebug src/bin/server.js",
     "debug-brk": "npm run debug -- --break",
     "test": "mocha --require test/_helpers test/**/*.spec.js --compilers js:babel-register --timeout 5000",

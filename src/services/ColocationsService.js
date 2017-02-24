@@ -1,6 +1,18 @@
 import * as colocDomain from '../domain/colocations'
 import _ from 'lodash'
 
+const getPriceQuery = (minPrice, maxPrice) => {
+  if (minPrice && maxPrice) {
+    return { $gte: minPrice, $lte: maxPrice }
+  } else if (minPrice) {
+    return { $gte: minPrice }
+  } else if (maxPrice) {
+    return { $lte: maxPrice }
+  } else {
+    return 0
+  }
+}
+
 export default class ColocationsService {
   constructor ({ currentUser }) {
     this.currentUser = currentUser
@@ -22,18 +34,19 @@ export default class ColocationsService {
   }
 
   find (prms) {
-    console.log(this.currentUser)
-
+    console.log('prms', prms)
     const {
       gender,
       lng,
-      lat
+      lat,
+      minPrice,
+      maxPrice
     } = prms
 
-    const q = {
-      gender,
-      lng,
-      lat
+    const q = { gender, lng, lat }
+
+    if (minPrice || maxPrice) {
+      q.price = getPriceQuery(minPrice, maxPrice)
     }
 
     const query = _(q)

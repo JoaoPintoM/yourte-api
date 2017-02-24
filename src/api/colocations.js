@@ -6,7 +6,7 @@ class ColocationAPI {
   }
 
   async findColocs (ctx) {
-    const prms = {}
+    const prms = ctx.query
     if (ctx.query.lng && ctx.query.lat) {
       prms.lng = ctx.query.lng
       prms.lat = ctx.query.lat
@@ -27,9 +27,12 @@ class ColocationAPI {
   }
 
   async create (ctx) {
+    console.log('create here.')
+    console.log(ctx.body)
     const colocToAdd = ctx.request.body
     colocToAdd.user = ctx.state.jwtdata
-
+    console.log('create : ')
+    console.log(ctx.request.body)
     const coloc = await this.colocationsService.create(ctx.request.body)
     ctx.ok(coloc)
   }
