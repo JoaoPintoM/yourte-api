@@ -27,12 +27,8 @@ class ColocationAPI {
   }
 
   async create (ctx) {
-    console.log('create here.')
-    console.log(ctx.body)
     const colocToAdd = ctx.request.body
-    colocToAdd.user = ctx.state.jwtdata
-    console.log('create : ')
-    console.log(ctx.request.body)
+    colocToAdd.user = ctx.state.jwtdata.userId
     const coloc = await this.colocationsService.create(ctx.request.body)
     ctx.ok(coloc)
   }

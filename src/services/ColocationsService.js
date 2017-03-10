@@ -25,7 +25,6 @@ export default class ColocationsService {
   }
 
   create (prms) {
-    console.log('prms', prms)
     return colocDomain.create(prms)
   }
 
