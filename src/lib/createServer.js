@@ -117,7 +117,11 @@ export default async function createServer () {
       console.log('YES BABY')
       console.log(ctx.state.user)
 
-      const jwt = jsonwebtoken.sign(ctx.state.user._id.toString(), 'hOeizoKoezosPke')
+      const jwt = jsonwebtoken.sign({
+        userId: ctx.state.user._id.toString(),
+        username: ctx.state.user.username,
+        picture: ctx.state.user.picture
+      }, 'hOeizoKoezosPke')
       ctx.body = jwt
 
       ctx.redirect(`${config.WEB.URL}/token/${jwt}`)

@@ -65,14 +65,26 @@ passport.use(new FacebookStrategy({
 },
   (token, tokenSecret, profile, done) => {
     console.log(profile)
-    console.log(' ')
+    console.log(' ° ')
 
-    userRepo.createUser({
-      username: profile.displayName,
-      facebook_id: profile.id
-    }).then((r) => {
-      !r ? done('jErr bad user creation') : done(null, r)
-    })
+    let photo = ''
+    if (profile.photos && profile.photos[0].value) {
+      photo = profile.photos[0].value
+    }
+
+    userRepo.getUserByFacebookId(profile.id)
+      .then((user) => {
+        if (!user) {
+          userRepo.createUser({
+            username: profile.displayName,
+            facebook_id: profile.id,
+            picture: photo
+          }).then((r) =>
+            !r ? done('jErr bad user creation') : done(null, r))
+        } else {
+          done(null, user)
+        }
+      })
   }
 ))
 
