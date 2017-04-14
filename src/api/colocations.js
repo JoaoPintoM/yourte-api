@@ -11,6 +11,7 @@ class ColocationAPI {
       prms.lng = ctx.query.lng
       prms.lat = ctx.query.lat
     }
+    console.log(prms)
     const colocs = await this.colocationsService.find(prms)
     ctx.ok(colocs)
   }

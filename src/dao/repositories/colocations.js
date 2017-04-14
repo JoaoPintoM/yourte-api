@@ -15,31 +15,21 @@ export class ColocationRepository {
   }
 
   getByGeo (query) {
-    console.log(query)
     const long = parseFloat(query.lng)
     const lat = parseFloat(query.lat)
 
-    return this.Colocation.find({
-      loc: {
-        $near: {
-          $geometry: { type: 'Point', coordinates: [ long, lat ] },
-          $minDistance: 0,
-          $maxDistance: 2000
-        }
+    const loc = {
+      $near: {
+        $geometry: { type: 'Point', coordinates: [ long, lat ] },
+        $minDistance: 0,
+        $maxDistance: 2000
       }
-    })
+    }
+    const finalQuery = { ...query, loc }
+    delete finalQuery.lat
+    delete finalQuery.lng
 
-    // return this.Colocation.aggregate([
-    //   { '$geoNear': {
-    //     'near': {
-    //       'type': 'Point',
-    //       'coordinates': [long, lat]
-    //     },
-    //     'distanceField': 'distance',
-    //     'sperical': true,
-    //     'maxDistance': 10000
-    //   }}
-    // ])
+    return this.Colocation.find(finalQuery)
   }
 
   createColocation (entry) {
@@ -53,7 +43,6 @@ export class ColocationRepository {
     console.log(' ')
 
     const colocation = new this.Colocation(entry)
-    console.log(colocation)
     return colocation.save()
   }
 

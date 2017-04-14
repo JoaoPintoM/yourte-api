@@ -12,6 +12,7 @@ const colocationSchema = Schema({ // eslint-disable-line new-cap
     coordinates: [Number]
   },
   adress: String,
+  description: { type: String, default: 'pas de description :(' },
   images: { type: [String], required: true }
 })
 
