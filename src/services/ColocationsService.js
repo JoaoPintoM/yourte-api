@@ -1,5 +1,6 @@
 import * as colocDomain from '../domain/colocations'
 import _ from 'lodash'
+import { sendEmail } from './emailService'
 
 const getPriceQuery = (minPrice, maxPrice) => {
   if (minPrice && maxPrice) {
@@ -55,5 +56,9 @@ export default class ColocationsService {
 
     console.log(query)
     return colocDomain.getColocations(query)
+  }
+
+  contact (prms) {
+    return sendEmail('piro@live.be', { name: 'super machin' }, { message: 'je voudrais ton appart' })
   }
 }

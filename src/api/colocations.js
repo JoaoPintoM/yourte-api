@@ -33,6 +33,12 @@ class ColocationAPI {
     const coloc = await this.colocationsService.create(ctx.request.body)
     ctx.ok(coloc)
   }
+
+  async contactColocation (ctx) {
+    console.log('contactForm')
+    const response = this.colocationsService.contact(ctx.params)
+    ctx.ok(response)
+  }
 }
 
 export default function (router) {
@@ -42,4 +48,5 @@ export default function (router) {
   router.post('/api/colocations/create', api('create'))
   router.get('/api/colocations/geoTest', api('findColocsGeoTest'))
   router.get('/api/colocations/createTest', api('createTest'))
+  router.get('/api/colocations/:id/contact', api('contactColocation'))
 }

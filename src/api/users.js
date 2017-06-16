@@ -15,7 +15,7 @@ class UsersAPI {
     ctx.ok(users)
   }
 
-  async createUser(ctx) {
+  async createUser (ctx) {
     const user = await this.userService.create()
     ctx.ok(user)
   }
