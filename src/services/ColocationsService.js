@@ -59,6 +59,7 @@ export default class ColocationsService {
   }
 
   contact (prms) {
-    return sendEmail('piro@live.be', { name: 'super machin' }, { message: 'je voudrais ton appart' })
+    // return sendEmail('piro@live.be', { name: 'super machin' }, { message: 'je voudrais ton appart' })
+    return { message: 'ok' }
   }
 }
