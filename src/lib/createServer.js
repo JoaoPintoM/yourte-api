@@ -106,6 +106,23 @@ export default async function createServer () {
     return next()
   })
 
+  // Unprotected middleware
+  app.use((ctx, next) => {
+    if (ctx.url.match(/^\/public/)) {
+      ctx.body = 'unprotected\n'
+    } else {
+      return next()
+    }
+  })
+
+  app.use((ctx, next) => {
+    if (ctx.url.match(/^\/authOK/)) {
+      ctx.body = `Welcome ${ctx.state.user.username}`
+    } else {
+      return next()
+    }
+  })
+
   router.get('/auth/facebook',
     passport.authenticate('facebook')
   )
@@ -128,17 +145,8 @@ export default async function createServer () {
     }
   )
 
-  // require('./authorization.js')
-  app.use((ctx, next) => {
-    return next().catch((err) => {
-      if (err.status === 401) {
-        ctx.status = 401
-        ctx.body = 'Protected resource, use Authorization header to get access\n'
-      } else {
-        throw err
-      }
-    })
-  })
+  app.use(jwt({ secret: 'hOeizoKoezosPke' })
+     .unless({ path: [/^\/auth/, /^\/public/] }))
 
   // Unprotected middleware
   app.use((ctx, next) => {
