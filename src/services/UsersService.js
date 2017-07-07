@@ -1,13 +1,28 @@
 import * as usersDomain from '../domain/users'
+import _ from 'lodash'
 
-export default class ClassService {
+export default class UsersService {
   constructor ({ currentUser }) {
     this.currentUser = currentUser
   }
 
-  find () {
+  find (prms) {
     console.log(this.currentUser)
-    return usersDomain.getAllUsers()
+    const {
+      gender
+    } = prms
+
+    const q = {
+      gender
+    }
+
+    const query = _(q)
+                    .omitBy(_.isUndefined)
+                    .omitBy(_.isNull)
+                    .value()
+
+    console.log(query)
+    return usersDomain.getUsers(query)
   }
 
   getUser (id) {

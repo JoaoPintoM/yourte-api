@@ -10,8 +10,12 @@ export class UsersRepository {
     return this.User.findById(userId).exec()
   }
 
-  get () {
-    return this.User.find().exec()
+  getUserByFacebookId (facebook_id) { // eslint-disable-line
+    return this.User.findOne({ facebook_id }).exec()
+  }
+
+  get (query) {
+    return this.User.find(query).exec()
   }
 
   createUser (entry) {

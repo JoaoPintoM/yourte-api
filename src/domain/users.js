@@ -3,8 +3,8 @@ import { User } from './objects/user'
 
 const usersRepo = new UsersRepository()
 
-export async function getAllUsers () {
-  const users = await usersRepo.get()
+export async function getUsers (query) {
+  const users = await usersRepo.get(query)
   return users.map(u => new User(u))
 }
 

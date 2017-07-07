@@ -23,7 +23,7 @@ userRepo.User.findOne({ username: 'test' }, (err, testUser) => {
         console.log(testUser)
         const colocR = new ColocationRequest({
           user: testUser,
-          maxPrice: 450
+          price: 450
         })
         colocR.save()
       }
@@ -32,11 +32,15 @@ userRepo.User.findOne({ username: 'test' }, (err, testUser) => {
 })
 
 passport.serializeUser((user, done) => {
+  console.log('serializeUser')
+  console.log(user)
   done(null, user._id)
 })
 
 passport.deserializeUser((id, done) => {
-  userRepo.User.findById(id, done)
+  console.log('deserializeUser')
+  console.log(id)
+  userRepo.User.findById(id, done).lean()
 })
 
 const LocalStrategy = require('passport-local').Strategy
@@ -48,7 +52,7 @@ const FacebookStrategy = require('passport-facebook').Strategy
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK.KEY,
   clientSecret: config.FACEBOOK.SECRET,
-  callbackURL: 'http://tipi.local:' + 1338 + '/auth/facebook/callback',
+  callbackURL: `${config.API.URL}/auth/facebook/callback`,
   profileFields: [
     'id', 'name',
     'picture.type(large)', 'emails',
@@ -61,14 +65,26 @@ passport.use(new FacebookStrategy({
 },
   (token, tokenSecret, profile, done) => {
     console.log(profile)
-    console.log(' ')
+    console.log(' ° ')
 
-    userRepo.createUser({
-      username: profile.displayName,
-      facebook_id: profile.id
-    }).then((r) => {
-      !r ? done('jErr bad user creation') : done(null, r)
-    })
+    let photo = ''
+    if (profile.photos && profile.photos[0].value) {
+      photo = profile.photos[0].value
+    }
+
+    userRepo.getUserByFacebookId(profile.id)
+      .then((user) => {
+        if (!user) {
+          userRepo.createUser({
+            username: profile.displayName,
+            facebook_id: profile.id,
+            picture: photo
+          }).then((r) =>
+            !r ? done('jErr bad user creation') : done(null, r))
+        } else {
+          done(null, user)
+        }
+      })
   }
 ))
 
