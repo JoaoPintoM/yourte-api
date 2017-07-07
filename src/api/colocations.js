@@ -35,13 +35,9 @@ class ColocationAPI {
   }
 
   async contactColocation (ctx) {
-    console.log('contactForm')
-    console.log(' ')
-    console.log(' ')
     console.log(ctx.request.body)
-    console.log(' ')
-    console.log(' ')
-    const response = this.colocationsService.contact(ctx.params)
+    const response = await this.colocationsService.contact(ctx.params)
+    console.log(response)
     ctx.ok(response)
   }
 }

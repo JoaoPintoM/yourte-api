@@ -9,12 +9,5 @@ const data = {
   text: 'Testing some Mailgun awesomness!'
 }
 
-export const sendEmail = (emailAdress, colocationReference, body) => {
-  mailgun.messages().send(data, (error, body) => {
-    if (error) {
-      console.log(error)
-      return {}
-    }
-    return { emailAdress, colocationReference, body }
-  })
-}
+export const sendEmail = (emailAdress, colocationReference, body) =>
+  mailgun.messages().send(data)
