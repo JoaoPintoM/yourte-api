@@ -14,6 +14,10 @@ const getPriceQuery = (minPrice, maxPrice) => {
   }
 }
 
+const getFiltersQuery = (array) => {
+  return { $all : array }
+}
+
 export default class ColocationsService {
   constructor ({ currentUser }) {
     this.currentUser = currentUser
@@ -40,10 +44,12 @@ export default class ColocationsService {
       lng,
       lat,
       minPrice,
-      maxPrice
+      maxPrice,
+      filters
     } = prms
 
-    const q = { gender, lng, lat }
+    const q = { gender, lng, lat, filters }
+
 
     if (minPrice || maxPrice) {
       q.price = getPriceQuery(minPrice, maxPrice)
@@ -52,8 +58,16 @@ export default class ColocationsService {
     const query = _(q)
                     .omitBy(_.isUndefined)
                     .omitBy(_.isNull)
+                    .omitBy(_.isEmpty)
                     .value()
 
+    if (query.filters) {
+      if (typeof query.filters === 'string') {
+        query.filters = [query.filters]
+      }
+
+      query.filters = getFiltersQuery(query.filters);
+    }
     console.log(query)
     return colocDomain.getColocations(query)
   }
