@@ -35,13 +35,22 @@ class ColocationAPI {
   }
 
   async contactColocation (ctx) {
-    console.log('contactForm')
     console.log(' ')
     console.log(' ')
-    console.log(ctx.request.body)
-    console.log(' ')
-    console.log(' ')
-    const response = this.colocationsService.contact(ctx.params)
+    console.log(ctx.state.jwtdata)
+    console.log('message from ', ctx.state.jwtdata.userId)
+
+    if (!ctx.request.body.message) {
+      return ctx.badRequest('bad message');
+    }
+
+    if (!ctx.request.body.email) {
+      return ctx.badRequest('no email');
+    }
+
+    const payload = ctx.request.body;
+    Object.assign(payload, { user: ctx.state.jwtdata.userId });
+    const response = await this.colocationsService.contact(payload)
     ctx.ok(response)
   }
 }
