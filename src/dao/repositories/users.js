@@ -7,7 +7,7 @@ export class UsersRepository {
   }
 
   getUser (userId) {
-    return this.User.findById(userId).exec()
+    return this.User.findById(userId).populate('favorites').exec()
   }
 
   getUserByFacebookId (facebook_id) { // eslint-disable-line
@@ -34,4 +34,13 @@ export class UsersRepository {
   deleteTestUsers () {
     return this.User.remove({ testing: true }).exec()
   }
+
+  async updateUserPhoto(id, photo) {
+    console.log('ici lol putain ')
+    const user = await this.getUser(id)
+    user.picture = photo
+    console.log(user.picture)
+    return user.save()
+  }
+
 }

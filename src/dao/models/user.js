@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
 const userSchema = mongoose.Schema({
   username: String,
@@ -8,7 +9,8 @@ const userSchema = mongoose.Schema({
   google_id: String,
   testing: Boolean,
   picture: String,
-  gender: String
+  gender: String,
+  favorites: [{ type: Schema.Types.ObjectId, ref: 'Colocation' }]
 })
 
 // module.exports = mongoose.model('User', userSchema)

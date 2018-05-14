@@ -61,15 +61,19 @@ passport.use(new FacebookStrategy({
     // 'user_location',
     // 'user_likes',
     // 'user_relationships',
-    'displayName', 'about', 'gender', 'age_range']
+    'displayName', 'about']
 },
   (token, tokenSecret, profile, done) => {
+    console.log(' ° ')
+    console.log(' ° ')
     console.log(profile)
     console.log(' ° ')
 
     let photo = ''
     if (profile.photos && profile.photos[0].value) {
       photo = profile.photos[0].value
+      console.log(' photo is ')
+      console.log(photo)
     }
 
     userRepo.getUserByFacebookId(profile.id)
@@ -82,7 +86,10 @@ passport.use(new FacebookStrategy({
           }).then((r) =>
             !r ? done('jErr bad user creation') : done(null, r))
         } else {
-          done(null, user)
+          console.log(user.id, photo)
+          userRepo.updateUserPhoto(user.id, photo).then(() => {
+            done(null, user)
+          })
         }
       })
   }

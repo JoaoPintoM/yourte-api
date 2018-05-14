@@ -9,6 +9,5 @@ export async function getUsers (query) {
 }
 
 export async function getUser (id) {
-  const user = await usersRepo.getUser(id)
-  return new User(user)
+  return await usersRepo.getUser(id)
 }
